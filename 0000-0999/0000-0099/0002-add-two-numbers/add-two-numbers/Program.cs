@@ -53,15 +53,16 @@ public class Solution
         return CreateNode(inverseArray);
     }
 
-    public static int ValueOf(ListNode l)
+    public static ulong ValueOf(ListNode l)
     {
-        var sum = 0;
+        ulong sum = 0;
 
         var currentNode = l;
         var count = 0;
         while (true)
         {
-            sum += currentNode.val * (int)Math.Pow(10, count);
+            sum += (ulong)currentNode.val * (ulong)Math.Pow(10, count);
+            Console.WriteLine(sum);
             if (currentNode.next == null)
                 break;
 
@@ -69,6 +70,7 @@ public class Solution
             count++;
         }
 
+        Console.WriteLine(sum);
         return sum;
     }
 
