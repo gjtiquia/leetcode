@@ -10,16 +10,27 @@ also the point is to focus on the algorithmic thinking, not to over-engineer and
 
 ### c# dotnet
 
+setup:
 ```bash
 # create a new dotnet console project
 dotnet new console -o ProjectName
+
+# run project
+dotnet run
 ```
 
+io:
 ```c#
-// input
-Console.ReadLine()
+Console.Write("input: ");
+var input = Console.ReadLine();
 
-// output
-Console.WriteLine()
+Console.WriteLine("hello " + input);
 ```
+
+gitignore:
+```gitignore
+bin
+obj
+```
+
 
