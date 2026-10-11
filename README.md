@@ -12,10 +12,7 @@ also the point is to focus on the algorithmic thinking, not to over-engineer and
 
 setup:
 ```bash
-# create a new dotnet console project
 dotnet new console -o ProjectName
-
-# run project
 dotnet run
 ```
 
