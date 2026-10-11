@@ -31,8 +31,22 @@ public class ListNode
 
     public ListNode(int[] vals)
     {
-        this.val = 1;
-        this.next = new(2, null);
+        if (vals.Length == 1)
+        {
+            this.val = vals[0];
+            this.next = null;
+            return;
+        }
+
+        var node = new ListNode(vals.Last(), null);
+        for (int i = vals.Length - 2; i >= 1; i--)
+        {
+            var currentNode = new ListNode(vals[i], node);
+            node = currentNode;
+        }
+
+        this.val = vals.First();
+        this.next = node;
     }
 
     public override string ToString()
