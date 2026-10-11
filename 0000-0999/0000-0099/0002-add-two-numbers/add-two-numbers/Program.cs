@@ -42,6 +42,8 @@ public class Solution
 {
     public ListNode AddTwoNumbers(ListNode l1, ListNode l2)
     {
+        // TODO : current methods are limited to int overflows so... we are gonna need to do our own arithmetic
+
         var sum = ValueOf(l1) + ValueOf(l2);
 
         var inverseArray = sum.ToString()
@@ -63,6 +65,7 @@ public class Solution
         {
             sum += (ulong)currentNode.val * (ulong)Math.Pow(10, count);
             Console.WriteLine(sum);
+
             if (currentNode.next == null)
                 break;
 
@@ -70,7 +73,6 @@ public class Solution
             count++;
         }
 
-        Console.WriteLine(sum);
         return sum;
     }
 
