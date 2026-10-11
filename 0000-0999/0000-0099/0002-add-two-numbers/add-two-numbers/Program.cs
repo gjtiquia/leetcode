@@ -16,7 +16,7 @@ var l2Array = Console.ReadLine()
     .ToArray()
     ;
 
-Console.WriteLine("output: " + new Solution().AddTwoNumbers(new(l1Array), new(l2Array)));
+Console.WriteLine("output: " + new Solution().AddTwoNumbers(Solution.CreateNode(l1Array), Solution.CreateNode(l2Array)));
 
 public class ListNode
 {
@@ -27,26 +27,6 @@ public class ListNode
     {
         this.val = val;
         this.next = next;
-    }
-
-    public ListNode(int[] vals)
-    {
-        if (vals.Length == 1)
-        {
-            this.val = vals[0];
-            this.next = null;
-            return;
-        }
-
-        var node = new ListNode(vals.Last(), null);
-        for (int i = vals.Length - 2; i >= 1; i--)
-        {
-            var currentNode = new ListNode(vals[i], node);
-            node = currentNode;
-        }
-
-        this.val = vals.First();
-        this.next = node;
     }
 
     public override string ToString()
@@ -62,7 +42,51 @@ public class Solution
 {
     public ListNode AddTwoNumbers(ListNode l1, ListNode l2)
     {
-        return l1;
+        var sum = ValueOf(l1) + ValueOf(l2);
+
+        var inverseArray = sum.ToString()
+            .ToCharArray()
+            .Reverse()
+            .ToList().ConvertAll(x => int.Parse((x.ToString())))
+            .ToArray();
+
+        return CreateNode(inverseArray);
+    }
+
+    public static int ValueOf(ListNode l)
+    {
+        var sum = 0;
+
+        var currentNode = l;
+        var count = 0;
+        while (true)
+        {
+            sum += currentNode.val * (int)Math.Pow(10, count);
+            if (currentNode.next == null)
+                break;
+
+            currentNode = currentNode.next;
+            count++;
+        }
+
+        return sum;
+    }
+
+    public static ListNode CreateNode(int[] vals)
+    {
+        if (vals.Length == 1)
+        {
+            return new(vals[0]);
+        }
+
+        var node = new ListNode(vals.Last(), null);
+        for (int i = vals.Length - 2; i >= 1; i--)
+        {
+            var currentNode = new ListNode(vals[i], node);
+            node = currentNode;
+        }
+
+        return new(vals.First(), node);
     }
 }
 
