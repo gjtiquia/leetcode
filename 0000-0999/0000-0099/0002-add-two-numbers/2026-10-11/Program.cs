@@ -4,8 +4,7 @@ var l1Array = Console.ReadLine()
     .Split(",")
     .Where(x => x.Length > 0)
     .ToList().ConvertAll(x => int.Parse(x))
-    .ToArray()
-    ;
+    .ToArray();
 
 Console.Write("l2 (comma delimited): ");
 var l2Array = Console.ReadLine()
@@ -13,8 +12,7 @@ var l2Array = Console.ReadLine()
     .Split(",")
     .Where(x => x.Length > 0)
     .ToList().ConvertAll(x => int.Parse(x))
-    .ToArray()
-    ;
+    .ToArray();
 
 Console.WriteLine("output: " + new Solution().AddTwoNumbers(Solution.CreateNode(l1Array), Solution.CreateNode(l2Array)));
 
@@ -42,55 +40,48 @@ public class Solution
 {
     public ListNode AddTwoNumbers(ListNode l1, ListNode l2)
     {
-        // TODO : current methods are limited to int overflows so... we are gonna need to do our own arithmetic
+        // 1,2,3 = 321
+        // 4,8   = 84
+        // 321 + 84 = 405 = 5,0,4
 
-        var sum = ValueOf(l1) + ValueOf(l2);
+        // 9,9,9,9 = 9999
+        // 1,0,0 = 1
+        // 9999 + 1 = 10000 = 0,0,0,0,1
 
-        var inverseArray = sum.ToString()
-            .ToCharArray()
-            .Reverse()
-            .ToList().ConvertAll(x => int.Parse((x.ToString())))
-            .ToArray();
-
-        return CreateNode(inverseArray);
-    }
-
-    public static ulong ValueOf(ListNode l)
-    {
-        ulong sum = 0;
-
-        var currentNode = l;
-        var count = 0;
+        int val1, val2, sum, carry = 0;
+        ListNode outputNode = null;
+        ListNode previousNode = null;
         while (true)
         {
-            sum += (ulong)currentNode.val * (ulong)Math.Pow(10, count);
-            Console.WriteLine(sum);
+            val1 = l1 != null ? l1.val : 0;
+            val2 = l2 != null ? l2.val : 0;
 
-            if (currentNode.next == null)
+            sum = val1 + val2 + carry;
+            carry = sum >= 10 ? 1 : 0;
+
+            var currentNode = new ListNode(sum % 10, null);
+
+            if (outputNode == null)
+                outputNode = currentNode;
+
+            if (previousNode != null)
+                previousNode.next = currentNode;
+
+            previousNode = currentNode;
+
+            l1 = l1 != null ? l1.next : null;
+            l2 = l2 != null ? l2.next : null;
+
+            if (l1 == null && l2 == null)
+            {
+                if (carry != 0)
+                    previousNode.next = new ListNode(carry, null);
+
                 break;
-
-            currentNode = currentNode.next;
-            count++;
+            }
         }
 
-        return sum;
-    }
-
-    public static ListNode CreateNode(int[] vals)
-    {
-        if (vals.Length == 1)
-        {
-            return new(vals[0]);
-        }
-
-        var node = new ListNode(vals.Last(), null);
-        for (int i = vals.Length - 2; i >= 1; i--)
-        {
-            var currentNode = new ListNode(vals[i], node);
-            node = currentNode;
-        }
-
-        return new(vals.First(), node);
+        return outputNode;
     }
 }
 
