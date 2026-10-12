@@ -83,5 +83,22 @@ public class Solution
 
         return outputNode;
     }
+
+    public static ListNode CreateNode(int[] vals)
+    {
+        if (vals.Length == 1)
+        {
+            return new(vals[0]);
+        }
+
+        var node = new ListNode(vals.Last(), null);
+        for (int i = vals.Length - 2; i >= 1; i--)
+        {
+            var currentNode = new ListNode(vals[i], node);
+            node = currentNode;
+        }
+
+        return new(vals.First(), node);
+    }
 }
 
