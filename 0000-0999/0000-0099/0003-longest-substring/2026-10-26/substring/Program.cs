@@ -11,25 +11,54 @@ public class Solution
 
         var length = 0;
         var longestLength = 0;
-        foreach (var character in s)
+        var currentIndex = -1;
+        char? lastChar = null;
+        foreach (var currentChar in s)
         {
-            // Console.WriteLine(character);
+            // Console.WriteLine(currentChar);
 
-            if (!characterCountDict.ContainsKey(character))
+            currentIndex++;
+
+            if (!characterCountDict.ContainsKey(currentChar))
             {
-                // Console.WriteLine($"adding {character}");
-                characterCountDict.Add(character, 1);
+                characterCountDict.Add(currentChar, currentIndex);
                 length++;
 
                 if (length > longestLength)
                     longestLength = length;
+
+                // Console.WriteLine($"adding {currentChar}, len: {length}");
             }
             else
             {
-                // Console.WriteLine("duplicate found");
-                length = 0;
-                characterCountDict.Clear();
+                var duplicateCharIndex = characterCountDict[currentChar];
+
+                if (currentChar == lastChar)
+                {
+                    characterCountDict.Clear();
+                    length = 1;
+
+                    // Console.WriteLine($"current char {currentChar} duplicate as last char {lastChar}, resetting length to {length}");
+                }
+                else
+                {
+                    length = currentIndex - duplicateCharIndex;
+
+                    // Console.WriteLine($"duplicate {currentChar} found, resetting length to {currentIndex} - {duplicateCharIndex} = {length}");
+
+                    foreach (var (charKey, indexValue) in characterCountDict)
+                    {
+                        if (indexValue < duplicateCharIndex)
+                            characterCountDict.Remove(charKey);
+                    }
+                }
+
+                characterCountDict[currentChar] = currentIndex;
+
             }
+
+            // Console.WriteLine($"last char: {lastChar}");
+            lastChar = currentChar;
         }
 
         return longestLength;
